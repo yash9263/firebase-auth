@@ -2,12 +2,17 @@ import { useState } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { authService } from "../firebase-config";
+import { useHistory, useLocation } from "react-router-dom";
 
 export default function SignUp() {
+  const history = useHistory();
+  const location = useLocation();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  let { from } = location.state || { from: { pathname: "/protected" } };
 
   const handleSignup = (event) => {
     event.preventDefault();
@@ -18,11 +23,12 @@ export default function SignUp() {
           userCredential.user.updateProfile({
             displayName: username,
           });
-          console.log("user signed up");
+          console.log("you're signed up");
           setError(null);
           setEmail("");
           setPassword("");
           setUsername("");
+          history.replace(from);
         })
         .catch((error) => {
           console.error(error);
@@ -69,7 +75,6 @@ export default function SignUp() {
           <input
             type="email"
             name=""
-            id=""
             placeholder="abc@email.com"
             value={email}
             onChange={(event) => {
@@ -82,7 +87,6 @@ export default function SignUp() {
           <input
             type="password"
             name=""
-            id=""
             placeholder="password"
             value={password}
             onChange={(event) => {

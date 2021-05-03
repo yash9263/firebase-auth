@@ -2,11 +2,16 @@ import { useState } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { authService } from "../firebase-config";
+import { useHistory, useLocation } from "react-router-dom";
 
 export default function SignIn() {
+  const history = useHistory();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  let { from } = location.state || { from: { pathname: "/protected" } };
 
   const handleSignin = (event) => {
     event.preventDefault();
@@ -17,7 +22,8 @@ export default function SignIn() {
           setEmail("");
           setPassword("");
           setError("");
-          console.log("user signed in");
+          history.replace(from);
+          console.log("you're signed in");
         })
         .catch((error) => {
           console.log(error);
@@ -53,7 +59,6 @@ export default function SignIn() {
           <input
             type="email"
             name=""
-            id=""
             placeholder="abc@email.com"
             value={email}
             onChange={(event) => {
@@ -66,7 +71,6 @@ export default function SignIn() {
           <input
             type="password"
             name=""
-            id=""
             placeholder="password"
             value={password}
             onChange={(event) => {
