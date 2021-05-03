@@ -41,8 +41,9 @@ export default function SignIn() {
     authService
       .signInWithPopup(provider)
       .then((result) => {
-        const user = result.user;
-        console.log(user);
+        // const user = result.user;
+        // console.log(user);
+        history.replace(from);
       })
       .catch((error) => {
         console.error(error);
